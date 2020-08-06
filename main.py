@@ -15,6 +15,6 @@ while True:
     if i == "":
         con.load()
     elif i == "q":
-        raise SystemExit(1)
+        break
     else:
         con.send(i)
