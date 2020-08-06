@@ -25,7 +25,6 @@ class Api():
                 continue
 
     def send(self, text):
-        print('hi')
         name = self.name
         text = text
 
