@@ -50,7 +50,7 @@ class Api():
         print('Войдите или зарегистрируйтесь (Если указанного логина не существует, будет создан новый аккаунт)')
 
         login = input('Введите логин\n')
-        password = input('Введите пароль\n')
+        password = input('Введите пароль (Не меньше 6 символов)\n')
         
         res = requests.post('https://fartuh.xyz/api/users/index.php', data = {"login": login, "password": password}) 
 
