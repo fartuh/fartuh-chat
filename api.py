@@ -26,14 +26,12 @@ class Api():
         login = self.login
         password = self.password
         os.system('cls' if os.name=='nt' else 'clear')
-        res = requests.get("https://fartuh.xyz/api/chat/", params = {"login": login, "password": password})
+        res = requests.get("https://fartuh.xyz/api/chat/index.php", params = {"login": login, "password": password})
         data = res.json()
+        data = reversed(data)
 
-        for i in range(-10, 0): 
-            try:
-                print(data[i]['login'] + ": " + data[i]['text'] + ": " + data[i]['sent_at'] + "\n")
-            except IndexError:
-                continue
+        for d in data:
+            print(d['login'] + ": " + d['text'] + ": " + d['sent_at'] + "\n")
 
     def send(self, text):
         text = text
