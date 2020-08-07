@@ -12,35 +12,68 @@ import json
 import os
 
 class Api():
-    name = ""
+    login = ""
+    password = ""
 
-    def __init__(self, name):
-        if name == "":
-            name = "Гость"
-        self.setName(name)
+    #def __init__(self, login, password):
+    #   self.setParams(login, password)
 
-    def setName(self, name):
-        self.name = name
+    def setParams(self, login, password):
+        self.login = login
+        self.password = password
 
     def load(self):
+        login = self.login
+        password = self.password
         os.system('cls' if os.name=='nt' else 'clear')
-        res = requests.get("https://fartuh.xyz/api/chat/")
+        res = requests.get("https://fartuh.xyz/api/chat/", params = {"login": login, "password": password})
         data = res.json()
 
         for i in range(-10, 0): 
             try:
-                print(data[i]['name'] + ": " + data[i]['text'] + "\n")
+                print(data[i]['login'] + ": " + data[i]['text'] + ": " + data[i]['sent_at'] + "\n")
             except IndexError:
                 continue
 
     def send(self, text):
-        name = self.name
         text = text
 
-        res = requests.post('https://fartuh.xyz/api/chat/index.php', data = {"text":text, "name":name}) 
+        res = requests.post('https://fartuh.xyz/api/chat/index.php', data = {"login": self.login, "password": self.password, "text":text}) 
 
         if res.json()['result'] == True:
             os.system('cls' if os.name=='nt' else 'clear')
             self.load()
         else:
             print('Ошибка. Перезапустите клиент')
+
+    def reg(self):
+        print('Войдите или зарегистрируйтесь (Если указанного логина не существует, будет создан новый аккаунт)')
+
+        login = input('Введите логин')
+        password = input('Введите пароль')
+        
+        res = requests.post('https://fartuh.xyz/api/users', data = {"login": login, "password": password}) 
+
+        responde = res.json()
+
+        if responde['result'] == True:
+            print('yes')
+        else:
+            print('no')
+
+        exit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

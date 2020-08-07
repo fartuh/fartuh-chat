@@ -9,13 +9,28 @@ Author's email: nikitafartuh@ukr.net
 
 import os
 import api
+import json
 
 os.system('cls' if os.name=='nt' else 'clear')
-name = input("Придумайте себе имя (до 20 символов)\n")
+#name = input("Придумайте себе имя (до 20 символов)\n")
 
-con = api.Api(name)
+con = api.Api()
+
+if(os.path.exists('data.json')):
+    with open('data.json', 'r') as string:
+        data = string.read()
+    data = json.loads(data)
+    try:
+        if data['login'] != "" and data['password'] != "":
+            con.setParams(data['login'], data['password'])
+    except KeyError:
+        con.reg()
+else:
+    con.reg()
 
 con.load()
+
+#chat
 
 while True:
     print('__________')
