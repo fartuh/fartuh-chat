@@ -49,21 +49,25 @@ class Api():
     def reg(self):
         print('Войдите или зарегистрируйтесь (Если указанного логина не существует, будет создан новый аккаунт)')
 
-        login = input('Введите логин')
-        password = input('Введите пароль')
+        login = input('Введите логин\n')
+        password = input('Введите пароль\n')
         
-        res = requests.post('https://fartuh.xyz/api/users', data = {"login": login, "password": password}) 
+        res = requests.post('https://fartuh.xyz/api/users/index.php', data = {"login": login, "password": password}) 
 
         responde = res.json()
 
         if responde['result'] == True:
-            print('yes')
+            data = {'login': login, 'password': password}
+            with open('data.json', 'w', encoding="utf8") as file:
+                json.dump(data, file) 
+            return data 
         else:
-            print('no')
-
-        exit()
-
-
+            if responde['errorcode'] == "1":
+                print('Пароль слишком короткий')
+                return self.reg()
+            if responde['errorcode'] == "2":
+                print('Пользователь с таким логином существует | Неверный пароль')
+                return self.reg()
 
 
 

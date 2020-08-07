@@ -12,7 +12,6 @@ import api
 import json
 
 os.system('cls' if os.name=='nt' else 'clear')
-#name = input("Придумайте себе имя (до 20 символов)\n")
 
 con = api.Api()
 
@@ -24,9 +23,11 @@ if(os.path.exists('data.json')):
         if data['login'] != "" and data['password'] != "":
             con.setParams(data['login'], data['password'])
     except KeyError:
-        con.reg()
+        data = con.reg()
+        con.setParams(data['login'], data['password'])
 else:
-    con.reg()
+    data = con.reg()
+    con.setParams(data['login'], data['password'])
 
 con.load()
 
@@ -34,11 +35,16 @@ con.load()
 
 while True:
     print('__________')
-    i = input('Чтобы обновить чат, нажмите Enter, чтобы отправить сообщение, напишите что-нибудь и нажмите Enter. Чтобы выйти, напишите q\n')
+    i = input('Чтобы обновить чат, нажмите Enter\nЧтобы отправить сообщение, напишите что-нибудь и нажмите Enter\nЧтобы выйти из чата, напишите /q\nЧтобы выйти из аккаунта, напишите /logout\n')
 
     if i == "":
         con.load()
-    elif i == "q":
+    elif i == "/q":
+        break
+    elif i == "/logout":
+        path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data.json')
+        os.remove(path) 
         break
     else:
         con.send(i)
+
